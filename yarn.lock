@@ -1770,3 +1770,8 @@
   dependencies:
     "tr46" "^3.0.0"
     "webidl-conversions" "^7.0.0"
+
+"ws@^8.12.1":
+  "integrity" "sha512-1qo+M9Ba+xNhPB+YTWUlK6M17brTut5EXbcBaMRN5pH5dFrXz7lzz1ChFSUq3bOUl8yEvSenhHmYUNJxFzdJew=="
+  "resolved" "https://registry.npmjs.org/ws/-/ws-8.12.1.tgz"
+  "version" "8.12.1"
