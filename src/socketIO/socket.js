@@ -13,10 +13,10 @@ const socketDevice = async (server) => {
   // Lắng nghe các kết nối tới WebSocket server
   const clients = [];
 
-  const token = "6298542409:AAGLk0uCMAJ6LFG3C5YN7EOh7bzHizY_tIU";
-  const chatId = "-1001541503853";
+  //const token = "6298542409:AAGLk0uCMAJ6LFG3C5YN7EOh7bzHizY_tIU";
+  //const chatId = "-1001541503853";
 
-  const bot = new tele(token, { polling: true });
+  //const bot = new tele(token, { polling: true });
 
   wss.on("connection", (ws) => {
     console.log("Client connected");
@@ -46,15 +46,15 @@ const socketDevice = async (server) => {
         //const warningBeat = `HearthBeat is too low, please check your patient or device ${dataBeat.data[0]}}`;
         //send warning to telegram
         if (warningBeat) {
-          const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${warningBeat}`;
-          await axios
-            .get(telegramUrl)
-            .then((response) => {
-              console.log("Message sent successfully");
-            })
-            .catch((error) => {
-              console.log("Error sending message:", error);
-            });
+          // const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${warningBeat}`;
+          // await axios
+          //   .get(telegramUrl)
+          //   .then((response) => {
+          //     console.log("Message sent successfully");
+          //   })
+          //   .catch((error) => {
+          //     console.log("Error sending message:", error);
+          //   });
 
           // send warning to web
           broadcastMessage(warningBeat);
@@ -157,24 +157,24 @@ const socketDevice = async (server) => {
     let reconnectCount = 0;
     const maxReconnectAttempts = 3;
 
-    bot.on("polling_error", (error) => {
-      console.log(`Polling error: ${error}`);
+    // bot.on("polling_error", (error) => {
+    //   console.log(`Polling error: ${error}`);
 
-      if (reconnectCount >= maxReconnectAttempts) {
-        console.log("Max reconnect attempts reached. Bot is stopping.");
-        return;
-      }
+    //   if (reconnectCount >= maxReconnectAttempts) {
+    //     console.log("Max reconnect attempts reached. Bot is stopping.");
+    //     return;
+    //   }
 
-      console.log(
-        `Attempting to reconnect to Telegram API (attempt ${
-          reconnectCount + 1
-        })...`
-      );
-      reconnectCount++;
-      setTimeout(() => {
-        bot.startPolling();
-      }, 5000);
-    });
+    //   console.log(
+    //     `Attempting to reconnect to Telegram API (attempt ${
+    //       reconnectCount + 1
+    //     })...`
+    //   );
+    //   reconnectCount++;
+    //   setTimeout(() => {
+    //     bot.startPolling();
+    //   }, 5000);
+    // });
   }
 };
 
