@@ -64,7 +64,7 @@ fs.createReadStream(`${__dirname}/heart.csv`)
       //saveModel(model);
       // Dự đoán
       const newPatient = tf.tensor2d([[45, 1, 2, 110, 264, 0, 0, 132, 0, 1.2, 1, 0, 2]]);
-      run(newPatient);
+      runModel(newPatient);
       //const prediction = model.predict(newPatient);
       //console.log(`Khả năng mắc bệnh tim mạch: ${prediction.dataSync()[0]}`);
     });

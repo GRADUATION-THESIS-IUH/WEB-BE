@@ -6,17 +6,32 @@ import beatAvgModel from "../models/beatAvg.model.js";
 import hearthBeatModel from "../models/hearthbeat.model.js";
 import warningModel from "../models/warning.model.js";
 import conditionRule from "../utils/conditionsRule.js";
+import fbAdmin from "firebase-admin";
+import serviceAccount from "./serviceKey.json" assert { type: "json" };
 
 const socketDevice = async (server) => {
+  fbAdmin.initializeApp({
+    credential: fbAdmin.credential.cert(serviceAccount),
+    databaseURL: 'https://iuh-da-default-rtdb.asia-southeast1.firebasedatabase.app/'
+  });
   // Tạo một WebSocket server và liên kết nó với HTTP server
   const wss = new WebSocketServer({ server });
   // Lắng nghe các kết nối tới WebSocket server
   const clients = [];
 
-  //const token = "6298542409:AAGLk0uCMAJ6LFG3C5YN7EOh7bzHizY_tIU";
-  //const chatId = "-1001541503853";
+  var messageApp = {
+    notification: {
+      title: "Title of your notification",
+      body: "Body of your notification",
+    },
+    token:
+      "c4S6TrciQjKBXLmiMtQpjx:APA91bHlk87isWU2xs8pXlcReJTGyrKcAF3jCulNPBEaPWdVTFgdyrxPtkhHnoyct-QnQH5mYwzNIJAOp8XgV-tEvAp027AIMHYovCNnly-Cmd3gcKLa2d7zdzxhSl02oX1eSDN5CmRz",
+  };
 
-  //const bot = new tele(token, { polling: true });
+  const token = "6298542409:AAGLk0uCMAJ6LFG3C5YN7EOh7bzHizY_tIU";
+  const chatId = "-1001541503853";
+
+  const bot = new tele(token, { polling: true });
 
   wss.on("connection", (ws) => {
     console.log("Client connected");
@@ -46,30 +61,40 @@ const socketDevice = async (server) => {
         //const warningBeat = `HearthBeat is too low, please check your patient or device ${dataBeat.data[0]}}`;
         //send warning to telegram
         if (warningBeat) {
-          // const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${warningBeat}`;
-          // await axios
-          //   .get(telegramUrl)
-          //   .then((response) => {
-          //     console.log("Message sent successfully");
-          //   })
-          //   .catch((error) => {
-          //     console.log("Error sending message:", error);
-          //   });
+          const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${warningBeat}`;
+          await axios
+            .get(telegramUrl)
+            .then((response) => {
+              console.log("Message sent successfully");
+            })
+            .catch((error) => {
+              console.log("Error sending message:", error);
+            });
 
           // send warning to web
           broadcastMessage(warningBeat);
           //ws.send(`Server received message: ${warningBeat}`);
 
-          // save warning to database
-          const warning = new warningModel();
-          warning.warning = warningBeat;
-          warning.date = new Date();
-          await warning.save();
+          //send mobile notification
+          // fbAdmin
+          //   .messaging()
+          //   .send(messageApp)
+          //   .then((response) => {
+          //     console.log("Successfully sent message:", response);
+          //   })
+          //   .catch((error) => {
+          //     console.log("Error sending message:", error);
+          //   });
+
+          // // save warning to database
+          // const warning = new warningModel();
+          // warning.warning = warningBeat;
+          // warning.date = new Date();
+          // await warning.save();
         }
       } else {
         //send warning to web
         //ws.send(`HearthBeat is too low, please check your patient or device ${dataBeat.data[0]} or no active IOT`);
-
         // save warning to database
         // const warning = new warningModel();
         // warning.warning = `HearthBeat is too low, please check your patient or device ${dataBeat.data[0]} or no active IOT`;
@@ -78,7 +103,6 @@ const socketDevice = async (server) => {
       }
       //ws.send("HearthBeat is too low");
     });
-
 
     // Xử lý lỗi khi có lỗi xảy ra trên WebSocket
     ws.on("error", (err) => {
@@ -93,7 +117,7 @@ const socketDevice = async (server) => {
 
   function broadcastMessage(message) {
     clients.forEach((ws) => {
-      ws.send(`Server received message: ${message}`);
+      ws.send(`${message}`);
     });
   }
 
@@ -157,24 +181,24 @@ const socketDevice = async (server) => {
     let reconnectCount = 0;
     const maxReconnectAttempts = 3;
 
-    // bot.on("polling_error", (error) => {
-    //   console.log(`Polling error: ${error}`);
+    bot.on("polling_error", (error) => {
+      console.log(`Polling error: ${error}`);
 
-    //   if (reconnectCount >= maxReconnectAttempts) {
-    //     console.log("Max reconnect attempts reached. Bot is stopping.");
-    //     return;
-    //   }
+      if (reconnectCount >= maxReconnectAttempts) {
+        console.log("Max reconnect attempts reached. Bot is stopping.");
+        return;
+      }
 
-    //   console.log(
-    //     `Attempting to reconnect to Telegram API (attempt ${
-    //       reconnectCount + 1
-    //     })...`
-    //   );
-    //   reconnectCount++;
-    //   setTimeout(() => {
-    //     bot.startPolling();
-    //   }, 5000);
-    // });
+      console.log(
+        `Attempting to reconnect to Telegram API (attempt ${
+          reconnectCount + 1
+        })...`
+      );
+      reconnectCount++;
+      setTimeout(() => {
+        bot.startPolling();
+      }, 5000);
+    });
   }
 };
 

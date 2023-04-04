@@ -68,7 +68,7 @@ router.put(
 )
 
 router.get(
-    "/info",
+    "/getinfo",
     tokenMiddleware.auth,
     userController.getInfo
 )

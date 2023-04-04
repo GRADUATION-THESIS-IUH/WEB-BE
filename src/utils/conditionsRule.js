@@ -1,3 +1,16 @@
+// json-rules-engine dùng giải thuật RETE để thực thi các quy tắc
+
+// Thư viện json-rules-engine dùng giải thuật RETE để thực thi các quy tắc. 
+//RETE là một giải thuật dựa trên đồ thị được phát triển để xử lý các hệ thống chuyên gia (expert systems). Giải thuật RETE được phát triển bởi Charles Forgy vào năm 1979 và vẫn được sử dụng rộng rãi trong c
+
+// Giải thuật RETE có thể đánh giá một tập hợp các quy tắc với các điều kiện 
+//phức tạp và các sự kiện đầu vào một cách hiệu quả. RETE cải thiện hiệu suất bằng cách lưu trữ các điều kiện của các quy tắc trong một cấu trúc dữ liệu được tối ưu hóa để nhanh chóng đối sánh với các sự kiện mới đầu vào.
+
+// Do đó, RETE được sử dụng rộng rãi trong các hệ thống logic dựa trên quy tắc, 
+//các hệ thống trí tuệ nhân tạo, và các ứng dụng thương mại điện tử để phân tích và đưa ra các quyết định dựa trên các luật và dữ liệu đầu vào.
+
+import { Engine } from "json-rules-engine";
+
 const conditionRule = (bmp) => {
   if (bmp < 60) {
     return "Nhịp tim của bệnh nhân này thấp, có thể bị suy tim hoặc bệnh lý nhịp tim.";
@@ -37,5 +50,46 @@ const conditionRuleHistory = (bmp) => {
     console.log("Nhịp tim của bạn trong khoảng bình thường.");
   }
 };
+
+const rule = {
+  conditions: {
+    all: [
+      {
+        fact: "customer",
+        path: "$.age",
+        operator: "greaterThanInclusive",
+        value: 18,
+      },
+      {
+        fact: "customer",
+        path: "$.orders",
+        operator: "greaterThan",
+        value: 5,
+      },
+    ],
+  },
+  event: {
+    type: "eligible for discount",
+    params: {
+      discount: 10,
+    },
+  },
+};
+
+// Tạo engine và thêm quy tắc
+const engine = new Engine();
+engine.addRule(rule);
+
+// Kiểm tra dữ liệu đầu vào
+const customer = {
+  name: "John",
+  age: 25,
+  orders: 6,
+};
+
+// Thực hiện quy tắc và trả về kết quả
+engine.run({ customer }).then((results) => {
+  results.events.map((event) => console.log(event.params));
+});
 
 export default { conditionRule, conditionRuleHistory };

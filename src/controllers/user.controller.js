@@ -38,7 +38,7 @@ const signin = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await userModel.findOne({ username }).select("username password salt id displayName");
+    const user = await userModel.findOne({ username }).select("username password salt id displayName isAdmin");
 
     if (!user) return responseHandler.badrequest(res, "User not exist");
 
@@ -56,7 +56,7 @@ const signin = async (req, res) => {
     responseHandler.created(res, {
       token,
       ...user._doc,
-      id: user.id
+      id: user.id,
     });
   } catch {
     responseHandler.error(res);
@@ -86,10 +86,7 @@ const updatePassword = async (req, res) => {
 const getInfo = async (req, res) => {
   try {
     const user = await userModel.findById(req.user.id);
-    console.log("🚀 ~ file: user.controller.js:89 ~ getInfo ~ user", user)
-
     if (!user) return responseHandler.notfound(res);
-
     responseHandler.ok(res, user);
   } catch {
     responseHandler.error(res);

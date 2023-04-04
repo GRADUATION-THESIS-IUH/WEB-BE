@@ -8,17 +8,10 @@ export default mongoose.model(
             type: String,
             required: true,
         },
-        description: {
-            type: String,
+        ruleId:{
+            type: Schema.Types.ObjectId,
+            ref: "Rule",
             required: true,
-        },
-        condition: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
+        }
     }, modelOptions)
 )

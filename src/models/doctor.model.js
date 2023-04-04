@@ -12,11 +12,17 @@ export default mongoose.model(
             type: String,
             required: true,
         },
-        password: {
+        specialist: {
             type: String,
             required: true,
         },
-        hospital: {
+        email: 
+        {
+            type: String,
+            required: true,
+        }
+        ,
+        hospitalName: {
             type: String,
             required: true,
         },
