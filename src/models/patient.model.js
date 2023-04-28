@@ -12,6 +12,10 @@ export default mongoose.model(
             type: Number,
             required: true,
         },
+        gender: {
+            type: Number,
+            required: true,
+        },
         phone: {
             type: String,
             required: true,

@@ -2,10 +2,12 @@ import express from "express";
 import { body } from "express-validator";
 import hospitalController from "../controllers/hospital.controller.js";
 import requestHandler from "../handlers/request.handler.js";
+import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router({ mergeParams: true });
 router.post(
   "/add_hospital",
+  tokenMiddleware.auth,
   body("name")
     .exists()
     .withMessage("name is required")
@@ -25,4 +27,5 @@ router.post(
   hospitalController.addHospital
 );
 
+router.get("/get_all_cbb", tokenMiddleware.auth, hospitalController.getAllHospitalCBB)
 export default router;

@@ -8,6 +8,14 @@ export default mongoose.model(
             type: String,
             required: true,
         },
+        ip_mac: {
+            type: String,
+            required: true,
+        },
+        patient_cccd: {
+            type: String,
+            required: true,
+        },
         date: {
             type: Date,
             required: true,

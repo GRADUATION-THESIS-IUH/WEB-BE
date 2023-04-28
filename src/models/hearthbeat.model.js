@@ -14,8 +14,8 @@ export default mongoose.model(
             required: true,
         },
         hospital_id: {
-            type: String,
-            required: true,
+            type: Schema.Types.ObjectId,
+            ref: "Hospital",
         },
         status: {
             type: Boolean,

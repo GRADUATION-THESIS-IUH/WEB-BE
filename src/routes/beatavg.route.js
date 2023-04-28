@@ -7,13 +7,10 @@ const router = express.Router({ mergeParams: true });
 //router.get("/check", espController.check)
 router.post(
   "/add_beat_avg",
-  body("mac")
-    .exists()
-    .withMessage("Mac is required")
-    .isLength({ min: 16 })
-    .withMessage("Mac minimum 16 chracter"),
-  body("avg").exists().withMessage("avg is required"),
   body("patient_cccd").exists().withMessage("patient_cccd is required"),
+  body("metric").exists().withMessage("metric is required"),
+  body("ip_mac").exists().withMessage("ip_mac is required"),
+  body("measurements").exists().withMessage("measurements is required"),
   requestHandler.validate,
   beatavgController.addBeatAvg
 );

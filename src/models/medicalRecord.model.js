@@ -6,32 +6,44 @@ export default mongoose.model(
     mongoose.Schema({
         patient: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Patient",
             required: true,
         },
         doctor: {
             type: Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Doctor",
             required: true,
         },
-        date: {
+        hospital: {
+            type: Schema.Types.ObjectId,
+            ref: "Hospital",
+            required: true,
+        },
+        date_start: {
             type: Date,
             required: true,
         },
+        date_end: {
+            type: Date,
+            required: true,
+        },
+        iot_id: {
+            type: Schema.Types.ObjectId,
+            ref: "HearthBeat",
+            required: true,
+        },
+        vital_signs: {
+            type: Array,
+            required: true,
+        },
+        target: {
+            type: Number,
+        },
         description: {
             type: String,
-            required: true,
-        },
-        condition: {
-            type: String,
-            required: true,
-        },
-        treatment: {
-            type: String,
-            required: true,
         },
         status: {
-            type: String,
+            type: Number,
             required: true,
         },
     }, modelOptions)

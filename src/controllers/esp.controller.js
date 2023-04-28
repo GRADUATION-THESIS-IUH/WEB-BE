@@ -38,4 +38,41 @@ const updateHearthBeat = async (req, res) => {
   }
 };
 
-export default {addHearthBeat, updateHearthBeat}
+
+const getHearthBeatAll = async (req, res) => {
+  try {
+    const hearthbeat = await hearthbeatModel.find().populate("hospital_id");
+    if (!hearthbeat) {
+      responseHandler.notfound(res);
+    }
+    const formatHearthBeat = await hearthbeat.map((item, index) => {
+      return {
+        key: index + 1,
+        stt: index + 1,
+        ...item._doc,
+      };
+    });
+    responseHandler.ok(res, formatHearthBeat);   
+  } catch (error) {
+    
+  }
+}
+
+const getHearthBeatAllCBB = async (req, res) => {
+  try {
+    const hearthbeat = await hearthbeatModel.find({status: false}).populate("hospital_id");
+    if (!hearthbeat) {
+      responseHandler.notfound(res);
+    }
+    const formatHearthBeat = await hearthbeat.map((item, index) => {
+      return {
+        value: item._doc._id,
+        label: item._doc.name_device + " - " + item._doc.ip_mac + " - " + item._doc.hospital_id.name,
+      };
+    });
+    responseHandler.ok(res, formatHearthBeat);   
+  } catch (error) {
+    
+  }
+}
+export default {addHearthBeat, updateHearthBeat, getHearthBeatAll, getHearthBeatAllCBB}

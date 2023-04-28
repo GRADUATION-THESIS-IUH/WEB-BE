@@ -1,16 +1,12 @@
-import e from "express";
 import responseHandler from "../handlers/response.handler.js";
 import hospitalModel from "../models/hospital.model.js";
-import { v4 as uuidv4 } from 'uuid';
 
 const addHospital = async (req, res) => {
   try {
     const { name, address, phone } = req.body;
-    const id = uuidv4();
     const checkHospitalExist = await hospitalModel.findOne({ id });
     if (checkHospitalExist) return responseHandler.badrequest(res, "Hospital already exist");
     const hospital = new hospitalModel();
-    hospital.id = id;
     hospital.name = name;
     hospital.address = address;
     hospital.phone = phone;
@@ -21,4 +17,19 @@ const addHospital = async (req, res) => {
   }
 };
 
-export default { addHospital };
+const getAllHospitalCBB = async (req, res) => {
+  try {
+      const hospitals = await hospitalModel.find();
+      const hospitalCBB = hospitals.map((hospital) => {
+        return {
+          value: hospital._id,
+          label: hospital.name,
+        };
+      });
+      responseHandler.ok(res, hospitalCBB);
+  } catch (error) {
+      responseHandler.error(res, error);
+  }
+};
+
+export default { addHospital, getAllHospitalCBB };

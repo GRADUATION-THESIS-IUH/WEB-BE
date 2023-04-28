@@ -12,6 +12,7 @@ import doctorRoute from "./doctor.route.js"
 import dashboard from "./dashboard.route.js"
 import condiRule from "./condi_rule.route.js"
 import rule from "./rule.route.js"
+import mediaRecord from "./media_record.js"
 
 const router = express.Router()
 
@@ -24,6 +25,7 @@ router.use("/beat_avg", beatAvgRoute)
 router.use("/hospital", hospitalRoute)
 router.use("/warning", warningRoute)
 router.use("/reviews", reviewRoute)
+router.use("/mediaRecord", mediaRecord)
 router.use("/rule", rule)
 router.use("/condi_rule", condiRule)
 router.use("/:mediaType", mediaRoute)

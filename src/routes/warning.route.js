@@ -9,6 +9,9 @@ router.post(
   body("warning")
     .exists()
     .withMessage("warning is required"),
+    body("ip_mac")
+    .exists()
+    .withMessage("ip_mac is required"),
   body("date")
     .exists()
     .withMessage("date is required")

@@ -7,25 +7,25 @@ import hearthBeatModel from "../models/hearthbeat.model.js";
 import warningModel from "../models/warning.model.js";
 import conditionRule from "../utils/conditionsRule.js";
 import fbAdmin from "firebase-admin";
-import serviceAccount from "./serviceKey.json" assert { type: "json" };
+//import serviceAccount from "./serviceKey.json" assert { type: "json" };
 
 const socketDevice = async (server) => {
-  fbAdmin.initializeApp({
-    credential: fbAdmin.credential.cert(serviceAccount),
-    databaseURL: 'https://iuh-da-default-rtdb.asia-southeast1.firebasedatabase.app/'
-  });
+  // fbAdmin.initializeApp({
+  //   credential: fbAdmin.credential.cert(serviceAccount),
+  //   databaseURL: 'https://iuh-da-default-rtdb.asia-southeast1.firebasedatabase.app/'
+  // });
   // Tạo một WebSocket server và liên kết nó với HTTP server
   const wss = new WebSocketServer({ server });
   // Lắng nghe các kết nối tới WebSocket server
   const clients = [];
 
-  var messageApp = {
+  const messageApp = {
     notification: {
-      title: "Title of your notification",
-      body: "Body of your notification",
+      title: "MediHearth - Warning",
+      body: "Body of Your Notification in Data",
     },
     token:
-      "c4S6TrciQjKBXLmiMtQpjx:APA91bHlk87isWU2xs8pXlcReJTGyrKcAF3jCulNPBEaPWdVTFgdyrxPtkhHnoyct-QnQH5mYwzNIJAOp8XgV-tEvAp027AIMHYovCNnly-Cmd3gcKLa2d7zdzxhSl02oX1eSDN5CmRz",
+      "fTy72ynPTVKutu_nYF8UUQ:APA91bGS8KYISU8Dh6gloQqfmMlLXeFuv1ww-e8gm3wruDWM-HKL8EM_suQUFQxNVqshzino8I5bZQ1tYv1MLsQdKtUEIBCjux38VjnQ9eOyqNfSwAhbxgtzMjKDpRULI6Byxee46laG",
   };
 
   const token = "6298542409:AAGLk0uCMAJ6LFG3C5YN7EOh7bzHizY_tIU";
@@ -45,16 +45,16 @@ const socketDevice = async (server) => {
 
       if (dataBeat?.data[1] >= 50 || dataBeat?.data[1] === "BT") {
         // save beatAVG to database
-        const cccdPatientUsingIOT = await hearthBeatModel.findOne({
-          ip_mac: dataBeat.data[0],
-        });
-        const today = new Date();
-        const beatavg = new beatAvgModel();
-        beatavg.ip_mac = dataBeat.data[0];
-        beatavg.avg = dataBeat.data[1];
-        beatavg.date = today;
-        beatavg.patient_cccd = cccdPatientUsingIOT.patient_cccd;
-        await beatavg.save();
+        // const cccdPatientUsingIOT = await hearthBeatModel.findOne({
+        //   ip_mac: dataBeat.data[0],
+        // });
+        // const today = new Date();
+        // const beatavg = new beatAvgModel();
+        // beatavg.ip_mac = dataBeat.data[0];
+        // beatavg.avg = dataBeat.data[1];
+        // beatavg.date = today;
+        // beatavg.patient_cccd = cccdPatientUsingIOT.patient_cccd;
+        // await beatavg.save();
 
         const warningBeat = conditionRule.conditionRule(dataBeat.data[1]);
 
@@ -75,7 +75,8 @@ const socketDevice = async (server) => {
           broadcastMessage(warningBeat);
           //ws.send(`Server received message: ${warningBeat}`);
 
-          //send mobile notification
+         // send mobile notification
+          // messageApp.notification.body = warningBeat;
           // fbAdmin
           //   .messaging()
           //   .send(messageApp)
@@ -115,9 +116,15 @@ const socketDevice = async (server) => {
     });
   });
 
+  const warningJson = (message) => {
+    return JSON.stringify({
+      type: "warning",
+      message: message,
+    });
+  }
   function broadcastMessage(message) {
     clients.forEach((ws) => {
-      ws.send(`${message}`);
+      ws.send(warningJson(message));
     });
   }
 

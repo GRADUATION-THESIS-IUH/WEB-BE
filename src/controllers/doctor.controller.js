@@ -33,4 +33,42 @@ const getDoctor = async (req, res) => {
   }
 }
 
-export default {addDoctor, getDoctor}
+const getAllDoctor = async (req, res) => {
+  try {
+    const doctor = await doctorModel.find();
+    if(!doctor)
+    {
+      responseHandler.notFound(res);
+    }
+    const formatDoctor = await doctor.map((item, index) => {
+      return {
+        key: index + 1,
+        stt: index + 1,
+        ...item._doc
+      }
+    })
+    responseHandler.ok(res, formatDoctor);
+  } catch {
+    responseHandler.error(res);
+  }
+}
+
+const getAllDoctorCBB = async (req, res) => {
+  try {
+    const doctor = await doctorModel.find();
+    if(!doctor)
+    {
+      responseHandler.notFound(res);
+    }
+    const formatDoctor = await doctor.map((item) => {
+      return {
+        value: item._id,
+        label: item.name + " - " + item.hospitalName + " - " + item.specialist
+      }
+    })
+    responseHandler.ok(res, formatDoctor);
+  } catch {
+    responseHandler.error(res);
+  }
+}
+export default {addDoctor,getAllDoctor, getDoctor, getAllDoctorCBB}

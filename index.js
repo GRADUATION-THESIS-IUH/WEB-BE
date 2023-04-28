@@ -18,6 +18,9 @@ app.use(cookieParser());
 app.use(morgan("common"));
 
 app.use("/api/v1", routes);
+app.use("/check", (req, res) => {
+  res.send("Server is running");
+});
 
 // bot.on('callback_query', (query) => {
 //   const photoPath = './src/assets/image/QR.png';

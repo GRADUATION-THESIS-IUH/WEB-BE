@@ -2,10 +2,12 @@ import express from "express";
 import { body } from "express-validator";
 import patientController from "../controllers/patient.controller.js";
 import requestHandler from "../handlers/request.handler.js";
+import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router({ mergeParams: true });
 router.post(
   "/add_patient",
+  tokenMiddleware.auth,
   body("name")
     .exists()
     .withMessage("name is required")
@@ -38,5 +40,11 @@ router.post(
   requestHandler.validate,
   patientController.addPatient
 );
+
+router.get("/get_all", tokenMiddleware.auth, patientController.getPatient);
+
+router.get("/get_inactive", tokenMiddleware.auth, patientController.getInactivePatient);
+
+router.post("/get_patient_by_id", tokenMiddleware.auth, patientController.getPatientById);
 
 export default router;
