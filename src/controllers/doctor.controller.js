@@ -42,7 +42,7 @@ const getAllDoctor = async (req, res) => {
     }
     const formatDoctor = await doctor.map((item, index) => {
       return {
-        key: index + 1,
+        key: item._id,
         stt: index + 1,
         ...item._doc
       }

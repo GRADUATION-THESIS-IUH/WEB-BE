@@ -5,7 +5,6 @@ import requestHandler from "../handlers/request.handler.js";
 import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router({ mergeParams: true });
-//router.get("/check", espController.check)
 router.post(
   "/add_media_record",
   tokenMiddleware.auth,
@@ -15,6 +14,8 @@ router.post(
 router.post("/get_media_record",tokenMiddleware.auth, media_recordController.getMediaRecord);
 
 router.post("/predictor",tokenMiddleware.auth, media_recordController.predictorMediaRecord);
+
+router.post("/end_media_record", tokenMiddleware.auth, media_recordController.endMediaRecord);
 
 export default router;
 

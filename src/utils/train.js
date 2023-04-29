@@ -85,7 +85,10 @@ const __dirname = path.dirname(__filename);
     const prediction = model.predict(inputData);
   
     // In kết quả dự đoán
-    console.log(`Khả năng mắc bệnh tim mạch: ${prediction.dataSync()[0]}`);
+    //console.log(`Khả năng mắc bệnh tim mạch: ${prediction.dataSync()[0]}`);
+    const result = prediction.dataSync()[0]
+    console.log("🚀 ~ file: train.js:90 ~ runModel ~ result:", result)
+    return result;
   }
 
   export default runModel;

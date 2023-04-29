@@ -5,7 +5,6 @@ import requestHandler from "../handlers/request.handler.js";
 import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router({ mergeParams: true });
-//router.get("/check", espController.check)
 router.post(
   "/add_IOT",
   tokenMiddleware.auth,
@@ -32,5 +31,6 @@ router.put(
 )
 
 router.get("/get_hb",tokenMiddleware.auth, espController.getHearthBeatAll);
-router.get("/get_hb_cbb",tokenMiddleware.auth, espController.getHearthBeatAllCBB);
+router.post("/get_hb_cbb",tokenMiddleware.auth, espController.getHearthBeatAllCBB);
+router.post("/update_hb_status",tokenMiddleware.auth, espController.updateHearthBeatStatus);
 export default router;

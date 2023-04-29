@@ -47,4 +47,6 @@ router.get("/get_inactive", tokenMiddleware.auth, patientController.getInactiveP
 
 router.post("/get_patient_by_id", tokenMiddleware.auth, patientController.getPatientById);
 
+router.post("/update_patient_status", tokenMiddleware.auth, patientController.updatePatientStatus);
+
 export default router;

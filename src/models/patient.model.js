@@ -26,7 +26,8 @@ export default mongoose.model(
             unique: true,
         },
         hospital_id: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "Hospital",
             required: true,
         },
         status: {

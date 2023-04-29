@@ -9,33 +9,11 @@ import traiModel from "../utils/train.js";
 
 const addMediaRecord = async (req, res) => {
   try {
-  // const {
-  //   patientId,
-  //   doctorId,
-  //   hospitalId,
-  //   date_start,
-  //   date_end,
-  //   vital_signs,
-  //   status,
-  // } = req.body;
   const { mediaRecordFN } = req.body;
-  console.log(
-    "🚀 ~ file: media_record.controller.js:20 ~ addMediaRecord ~ mediaRecordFN:",
-    mediaRecordFN
-  );
   const id = uuidv4();
-  // const checkPatiendId = await patientModel.findById(patientId);
-  // const checkDoctorId = await doctorModel.findById(doctorId);
-  // const checkHospitalId = await hospitalModel.findById(hospitalId);
-  // if (!checkPatiendId)
-  //   return responseHandler.badrequest(res, "Patient not exist");
-  // if (!checkDoctorId)
-  //   return responseHandler.badrequest(res, "Doctor not exist");
-  // if (!checkHospitalId)
-  //   return responseHandler.badrequest(res, "Hospital not exist");
   const vital_signsNew = [];
   vital_signsNew.push(mediaRecordFN.Age);
-  vital_signsNew.push(parseInt(mediaRecordFN.gender));
+  vital_signsNew.push(mediaRecordFN.gender === "Male" ? 1 : 0);
   vital_signsNew.push(mediaRecordFN.CP);
   vital_signsNew.push(mediaRecordFN.Trestbps);
   vital_signsNew.push(mediaRecordFN.Chol);
@@ -47,10 +25,6 @@ const addMediaRecord = async (req, res) => {
   vital_signsNew.push(mediaRecordFN.Slope);
   vital_signsNew.push(mediaRecordFN.Ca);
   vital_signsNew.push(mediaRecordFN.Thal);
-  console.log(
-    "🚀 ~ file: media_record.controller.js:45 ~ addMediaRecord ~ vital_signsNew:",
-    vital_signsNew
-  );
   const mediaRecordNew = new mediaRecord();
   mediaRecordNew.id = id;
   mediaRecordNew.patient = mediaRecordFN.patientId[0];
@@ -60,11 +34,8 @@ const addMediaRecord = async (req, res) => {
   mediaRecordNew.date_start = mediaRecordFN.date_start;
   mediaRecordNew.date_end = mediaRecordFN.date_end;
   mediaRecordNew.vital_signs = vital_signsNew;
+  mediaRecordNew.target = 0;
   mediaRecordNew.status = 1;
-  console.log(
-    "🚀 ~ file: media_record.controller.js:56 ~ addMediaRecord ~ mediaRecordNew:",
-    mediaRecordNew
-  );
   await mediaRecordNew.save();
   await patientModel.findByIdAndUpdate(mediaRecordFN.patientId[0], {
     $push: { status: true },
@@ -106,10 +77,26 @@ const predictorMediaRecord = async (req, res) => {
   const {idMed } = req.body;
   try {
     const media_record = await mediaRecord.findById(idMed);
-    console.log("🚀 ~ file: media_record.controller.js:109 ~ predictorMediaRecord ~ media_record:", media_record)
-    const testTrain = traiModel(media_record.vital_signs)
+    const testTrain = await traiModel(media_record.vital_signs)
+    await mediaRecord.findByIdAndUpdate(idMed, {
+      $set: { target: testTrain },
+    });
+    responseHandler.ok(res, testTrain);
   } catch (error) {
     responseHandler.error(res);
   }
 };
-export default { addMediaRecord, getMediaRecord, predictorMediaRecord };
+
+const endMediaRecord = async (req, res) => {
+  const { idMed } = req.body;
+  try {
+    const data = await mediaRecord.findByIdAndUpdate(idMed, {
+      $set: { status: 0, date_end: new Date() },
+    });
+    responseHandler.ok(res, data);
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
+export default { addMediaRecord, getMediaRecord, predictorMediaRecord, endMediaRecord};
