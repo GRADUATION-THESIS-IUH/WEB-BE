@@ -1,25 +1,76 @@
 // json-rules-engine dùng giải thuật RETE để thực thi các quy tắc
 
-// Thư viện json-rules-engine dùng giải thuật RETE để thực thi các quy tắc. 
+// Thư viện json-rules-engine dùng giải thuật RETE để thực thi các quy tắc.
 //RETE là một giải thuật dựa trên đồ thị được phát triển để xử lý các hệ thống chuyên gia (expert systems). Giải thuật RETE được phát triển bởi Charles Forgy vào năm 1979 và vẫn được sử dụng rộng rãi trong c
 
-// Giải thuật RETE có thể đánh giá một tập hợp các quy tắc với các điều kiện 
+// Giải thuật RETE có thể đánh giá một tập hợp các quy tắc với các điều kiện
 //phức tạp và các sự kiện đầu vào một cách hiệu quả. RETE cải thiện hiệu suất bằng cách lưu trữ các điều kiện của các quy tắc trong một cấu trúc dữ liệu được tối ưu hóa để nhanh chóng đối sánh với các sự kiện mới đầu vào.
 
-// Do đó, RETE được sử dụng rộng rãi trong các hệ thống logic dựa trên quy tắc, 
+// Do đó, RETE được sử dụng rộng rãi trong các hệ thống logic dựa trên quy tắc,
 //các hệ thống trí tuệ nhân tạo, và các ứng dụng thương mại điện tử để phân tích và đưa ra các quyết định dựa trên các luật và dữ liệu đầu vào.
 
 import { Engine } from "json-rules-engine";
+import ruleModel from "../models/rule.model.js";
+
+const changeStream = ruleModel.watch();
+const ruleBradycardia = [];
+const ruleNormal = [];
+const ruleTachycardia = [];
+
+async function getRules() {
+  ruleModel.find({}).then((rules) => {
+    console.log("🚀 ~ file: conditionsRule.js:22 ~ ruleModel.find ~ rules:", rules)
+    rules.forEach((rule) => {
+    if (rule.name === "Bradycardia") {
+      ruleBradycardia.push(rule);
+    } else if (rule.name === "Normal") {
+      ruleNormal.push(rule);
+    } else if (rule.name === "Tachycardia") {
+      ruleTachycardia.push(rule);
+    }
+  });
+    console.log("🚀 ~ file: conditionsRule.js:25 ~ ruleModel.find ~ ruleBradycardia:", ruleBradycardia)
+  });
+}
+
+changeStream.on("change", (change) => {
+  ruleModel
+    .findOne({ _id: change.documentKey._id })
+    .then((rules) => {
+      if (rules.name === "Bradycardia") {
+        ruleBradycardia.pop();
+        ruleBradycardia.push(rules);
+      } else if (rules.name === "Normal") {
+        ruleNormal.pop();
+        ruleNormal.push(rules);
+      } else if (rules.name === "Tachycardia") {
+        ruleTachycardia.pop();
+        ruleTachycardia.push(rules);
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting user:", error);
+    });
+});
 
 const conditionRule = (bmp) => {
-  if (bmp < 60) {
-    return "Nhịp tim của bệnh nhân này thấp, có thể bị suy tim hoặc bệnh lý nhịp tim.";
-  } else if (bmp >= 60 && bmp <= 100) {
-    return "Nhịp tim của bệnh nhân này bình thường, nhưng nếu bạn có các triệu chứng như khó thở, đau ngực, chóng mặt, hoặc mệt mỏi, liên hệ bác sĩ để kiểm tra và đánh giá tình trạng sức khỏe của bệnh nhân";
-  } else if (bmp > 100 && bmp <= 120) {
-    return "Nhịp tim của bệnh nhân này cao, có thể là do tăng huyết áp, loạn nhịp, hoặc các vấn đề khác liên quan đến tim mạch. Liên hệ bác sĩ để kiểm tra sức khỏe và được chẩn đoán chính xác.";
+  if (
+    bmp > ruleBradycardia[0].heartRateFrom &&
+    bmp < ruleBradycardia[0].heartRateTo
+  ) {
+    return "Heart rate is falling, immediately check the heart rate monitor and monitor the patient's health status";
+  } else if (
+    bmp > ruleNormal[0].heartRateFrom &&
+    bmp < ruleNormal[0].heartRateTo
+  ) {
+    return "This patient's heart rate is normal, please continue to monitor the patient's health.";
+  } else if (
+    bmp > ruleTachycardia[0].heartRateFrom &&
+    bmp < ruleTachycardia[0].heartRateTo
+  ) {
+    return "The heart rate is increasing suddenly, now check the heart rate monitor again and monitor the patient's health status";
   } else {
-    return "Nhịp tim của bệnh nhân này quá cao, có thể là do nhồi máu cơ tim, loạn nhịp, hoặc các vấn đề tim mạch nghiêm trọng khác. Hãy đến gấp phòng cấp cứu hoặc gọi điện cho xe cấp cứu để được chăm sóc và điều trị kịp thời.";
+    return "This patient's heart rate is too high, intervene immediately.";
   }
 };
 
@@ -92,4 +143,4 @@ engine.run({ customer }).then((results) => {
   results.events.map((event) => console.log(event.params));
 });
 
-export default { conditionRule, conditionRuleHistory };
+export default { conditionRule, conditionRuleHistory, getRules };

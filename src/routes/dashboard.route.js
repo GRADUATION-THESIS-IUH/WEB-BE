@@ -11,4 +11,10 @@ router.get(
   dashboardController.getDashBoardCard
 );
 
+router.post(
+  "/get_heart_rate_chart_week",
+  tokenMiddleware.auth,
+  dashboardController.getDashBoardChartWeek
+);
+
 export default router;

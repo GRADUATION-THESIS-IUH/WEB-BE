@@ -6,12 +6,11 @@ import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router({ mergeParams: true });
 router.post(
-  "/add_rule",
+  "/update_rule",
   tokenMiddleware.auth,
-    body("name").notEmpty().withMessage("name is required"),
-    body("description").notEmpty().withMessage("description is required"),
-    body("rules").notEmpty().withMessage("rules is required").isObject().withMessage("rules must be an object"),
-  ruleController.addRule
+  ruleController.updateRule
 );
+router.post("/addRule", tokenMiddleware.auth, ruleController.addRule);
 
+router.get("/getRule", tokenMiddleware.auth, ruleController.getRule);
 export default router;

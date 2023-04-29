@@ -7,6 +7,7 @@ import routes from "./src/routes/index.js";
 import morgan from "morgan";
 import http from "http";
 import socketDevice from "./src/socketIO/socket.js";
+import conditionsRule from "./src/utils/conditionsRule.js";
 
 
 const app = express();
@@ -39,6 +40,7 @@ mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("Mongodb connected");
+    conditionsRule.getRules();
     server.listen(port, () => {
       console.log(`Server is listening on port  ${port}`);
     });
@@ -47,3 +49,5 @@ mongoose
     console.log(err);
     process.exit(1);
   });
+
+

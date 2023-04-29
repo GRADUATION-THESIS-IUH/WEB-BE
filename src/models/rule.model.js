@@ -7,18 +7,17 @@ export default mongoose.model(
       id: {
         type: String,
         required: true,
-        unique: true,
       },
       name: {
         type: String,
         required: true,
       },
-      description: {
-        type: String,
+      heartRateFrom: {
+        type: Number,
         required: true,
       },
-      rules: {
-        type: Object,
+      heartRateTo: {
+        type: Number,
         required: true,
       },
     }, modelOptions));
