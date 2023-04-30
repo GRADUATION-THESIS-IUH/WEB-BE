@@ -60,7 +60,7 @@ const socketDevice = async (server) => {
         //save beatAVG to database
         const cccdPatientUsingIOT = await hearthBeatModel.findOne({
           ip_mac: dataBeat.data[0],
-        });
+        }).populate("patient_cccd");
         const today = new Date();
         const beatavg = new beatAvgModel();
         beatavg.ip_mac = dataBeat.data[0];
@@ -103,7 +103,7 @@ const socketDevice = async (server) => {
           // save warning to database
           const warning = new warningModel();
           warning.warning = warningBeat;
-          warning.patient_cccd = cccdPatientUsingIOT.patient_cccd;
+          warning.patient_cccd = cccdPatientUsingIOT.patient_cccd.name;
           warning.ip_mac = dataBeat.data[0];
           warning.date = new Date();
           await warning.save();

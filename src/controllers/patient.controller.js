@@ -73,10 +73,13 @@ const getPatientById = async (req, res) => {
 
 const updatePatientStatus = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id, status } = req.body;
+    console.log("🚀 ~ file: patient.controller.js:77 ~ updatePatientStatus ~ status:", status)
+    console.log("🚀 ~ file: patient.controller.js:77 ~ updatePatientStatus ~ id:", id)
     const patientId = await patientModel.findByIdAndUpdate(id, {
-      status: true,
+      status: status,
     });
+    console.log("🚀 ~ file: patient.controller.js:82 ~ updatePatientStatus ~ patientId:", patientId)
     if (!patientId) {
       responseHandler.notFound(res);
     }

@@ -22,8 +22,9 @@ export default mongoose.model(
             required: true,
         }
         ,
-        hospitalName: {
-            type: String,
+        hospital_id: {
+            type: Schema.Types.ObjectId,
+            ref: "Hospital",
             required: true,
         },
     }, modelOptions)

@@ -39,7 +39,7 @@ const updateHearthBeat = async (req, res) => {
 
 const getHearthBeatAll = async (req, res) => {
   try {
-    const hearthbeat = await hearthbeatModel.find().populate("hospital_id");
+    const hearthbeat = await hearthbeatModel.find().populate("hospital_id").populate("patient_cccd");
     if (!hearthbeat) {
       responseHandler.notfound(res);
     }
@@ -101,10 +101,29 @@ const updateHearthBeatStatus = async (req, res) => {
   }
 };
 
+const updateHearthBeatPatientCCCD = async (req, res) => {
+  //try {
+    const { id, cccd } = req.body;
+    console.log("🚀 ~ file: esp.controller.js:107 ~ updateHearthBeatPatientCCCD ~ cccd:", cccd)
+    const hearthbeat = await hearthbeatModel.findByIdAndUpdate(id, {
+      patient_cccd: cccd,
+    });
+    console.log("🚀 ~ file: esp.controller.js:111 ~ updateHearthBeatPatientCCCD ~ hearthbeat:", hearthbeat)
+    if (!hearthbeat) {
+      responseHandler.notfound(res);
+    }
+    responseHandler.ok(res, hearthbeat);
+  // }
+  // catch (error) {
+  //   responseHandler.error(res);
+  // }
+}
+
 export default {
   addHearthBeat,
   updateHearthBeat,
   getHearthBeatAll,
   getHearthBeatAllCBB,
   updateHearthBeatStatus,
+  updateHearthBeatPatientCCCD
 };

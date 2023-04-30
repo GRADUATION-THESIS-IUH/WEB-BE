@@ -18,4 +18,13 @@ const addWarning = async (req, res) => {
   }
 };
 
-export default { addWarning };
+const getWarning = async (req, res) => {
+  try {
+    const warning = await warningModel.find().sort({ date: -1 }).limit(5);
+    responseHandler.ok(res, warning);
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
+export default { addWarning, getWarning };

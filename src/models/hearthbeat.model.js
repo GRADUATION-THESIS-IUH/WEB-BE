@@ -22,7 +22,9 @@ export default mongoose.model(
             required: true,
         },
         patient_cccd: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "Patient",
+            required: true,
         }
     }, modelOptions)
 )

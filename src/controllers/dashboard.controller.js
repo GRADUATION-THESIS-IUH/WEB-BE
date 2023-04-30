@@ -36,7 +36,6 @@ const getDashBoardCard = async (req, res) => {
 
 const getDashBoardChartWeek = async (req, res) => {
   const { ip_mac } = req.body;
-  console.log("🚀 ~ file: dashboard.controller.js:39 ~ getDashBoardChartWeek ~ ip_mac:", ip_mac[0])
   try {
     const dateRange = moment().startOf("day").subtract(6, "days");
     const beat_avgs = await beatAvgModel.aggregate([

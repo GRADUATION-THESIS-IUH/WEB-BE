@@ -2,6 +2,7 @@ import express from "express";
 import { body } from "express-validator";
 import warningController from "../controllers/warning.controller.js";
 import requestHandler from "../handlers/request.handler.js";
+import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router({ mergeParams: true });
 router.post(
@@ -20,5 +21,7 @@ router.post(
   requestHandler.validate,
   warningController.addWarning
 );
+
+router.get("/get_warning",tokenMiddleware.auth, warningController.getWarning);
 
 export default router;

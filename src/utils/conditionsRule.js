@@ -19,7 +19,6 @@ const ruleTachycardia = [];
 
 async function getRules() {
   ruleModel.find({}).then((rules) => {
-    console.log("🚀 ~ file: conditionsRule.js:22 ~ ruleModel.find ~ rules:", rules)
     rules.forEach((rule) => {
     if (rule.name === "Bradycardia") {
       ruleBradycardia.push(rule);
@@ -29,7 +28,6 @@ async function getRules() {
       ruleTachycardia.push(rule);
     }
   });
-    console.log("🚀 ~ file: conditionsRule.js:25 ~ ruleModel.find ~ ruleBradycardia:", ruleBradycardia)
   });
 }
 

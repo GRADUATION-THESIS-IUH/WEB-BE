@@ -1,7 +1,6 @@
 import express from "express"
 import userRoute from "./user.route.js"
 import mediaRoute from "./media.route.js"
-import personRoute from "./person.route.js"
 import reviewRoute from "./review.route.js"
 import espRoute from "./esp.route.js"
 import patientRoute from "./patient.route.js"
@@ -28,6 +27,5 @@ router.use("/reviews", reviewRoute)
 router.use("/mediaRecord", mediaRecord)
 router.use("/rule", rule)
 router.use("/condi_rule", condiRule)
-router.use("/:mediaType", mediaRoute)
 
 export default router;
