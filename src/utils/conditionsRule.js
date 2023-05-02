@@ -20,14 +20,14 @@ const ruleTachycardia = [];
 async function getRules() {
   ruleModel.find({}).then((rules) => {
     rules.forEach((rule) => {
-    if (rule.name === "Bradycardia") {
-      ruleBradycardia.push(rule);
-    } else if (rule.name === "Normal") {
-      ruleNormal.push(rule);
-    } else if (rule.name === "Tachycardia") {
-      ruleTachycardia.push(rule);
-    }
-  });
+      if (rule.name === "Bradycardia") {
+        ruleBradycardia.push(rule);
+      } else if (rule.name === "Normal") {
+        ruleNormal.push(rule);
+      } else if (rule.name === "Tachycardia") {
+        ruleTachycardia.push(rule);
+      }
+    });
   });
 }
 
@@ -56,19 +56,19 @@ const conditionRule = (bmp) => {
     bmp > ruleBradycardia[0].heartRateFrom &&
     bmp < ruleBradycardia[0].heartRateTo
   ) {
-    return "Heart rate is falling, immediately check the heart rate monitor and monitor the patient's health status";
+    return "Heart rate is falling, immediately check the heart rate monitor and monitor the patient's health status" + "-" + bmp;
   } else if (
-    bmp > ruleNormal[0].heartRateFrom &&
-    bmp < ruleNormal[0].heartRateTo
+    bmp >= ruleNormal[0].heartRateFrom &&
+    bmp <= ruleNormal[0].heartRateTo
   ) {
-    return "This patient's heart rate is normal, please continue to monitor the patient's health.";
+    return "This patient's heart rate is normal, please continue to monitor the patient's health" + "-" + bmp;
   } else if (
-    bmp > ruleTachycardia[0].heartRateFrom &&
+    bmp >= ruleTachycardia[0].heartRateFrom &&
     bmp < ruleTachycardia[0].heartRateTo
   ) {
-    return "The heart rate is increasing suddenly, now check the heart rate monitor again and monitor the patient's health status";
+    return "The heart rate is increasing suddenly, now check the heart rate monitor again and monitor the patient's health status" + "-" + bmp;
   } else {
-    return "This patient's heart rate is too high, intervene immediately.";
+    return "This patient's heart rate is too high, intervene immediately" + "-" + bmp;
   }
 };
 
