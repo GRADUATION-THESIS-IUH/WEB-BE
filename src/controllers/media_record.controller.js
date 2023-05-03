@@ -137,7 +137,7 @@ const updateMediaRecord = async (req, res) => {
     ];
     const updateMediaRecord = await mediaRecord.findByIdAndUpdate(id, {
       $set: { vital_signs: newVitalSigns },
-    });
+    }, {new: true}).populate("patient").populate("doctor").populate("hospital").populate("iot_id");
     responseHandler.ok(res, updateMediaRecord);
   } catch (error) {
     responseHandler.error(res);
