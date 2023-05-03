@@ -11,21 +11,22 @@ import fbAdmin from "firebase-admin";
 
 const socketDevice = async (server) => {
   fbAdmin.initializeApp({
-    credential: fbAdmin.credential.cert(
-      {
-        "type": "service_account",
-        "project_id": "iuh-da",
-        "private_key_id": "3ddc5f4ac3b58bc4c6fe7a93feeefd49f1c80529",
-        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5uhsQYmVZVtic\n9NhBj7dWLyh34kfWb8ffACZYm52EHs3BXpiwp8zkZ9T7KOMcQ3sARXAZidgzmrJf\nCiEP194mw1EmdugB6w/Qxwn4grnEBLkC7MZcgYZe6TgK9z1Be+z7rJJWAM/AlLZW\ngxABLVGERcWcdP3RQ/vBu7a7r2y3RqSjADS4ZJeDhNUJy/jHoSoK+45TmX75Iqo6\nXt3QI5Lk9ZOlIdMoriEC8uJcGFgkbhqFG0fVh0cRRhr63m1Ncoap/pBSzyVE+XN6\n4aprrH/JvHEndWvg0ENPBLqs9EWlnm2hjHoAhKE+yS5cZvs7e+F9xWDxQRfYTfgP\n2Iq5OSSfAgMBAAECggEAKseOx1HaxV7HKzQMgeFwGdZn7GE/Kcn6kEeRDZTejdmo\njBNVeU9VVwEBok5zLYXvlYro/MDu/0fxMQn8vpD69xPDI+h8nUB/FphaGBdIYbmy\nwdU3BYTCJidzBLeZMPWyCvBfjpbGQ7YdX8T1kUfWgHCvyU97TVHq8d9igk2wbXBg\nGaMw4UuSy+hvKbL1uURDUKEWHah+cPqokW0AYwmaLr74/C/1Xos008hmIUpZNGLF\nSuz53pLj+6fcCAjktsN9SDIk8dDYEcOc7AjWUlBlFfvjuYg3JPcR3SMwcgSQXP/o\nDMaUyRIufSa2G9eG0MMQwJOZSLYimGj+ZUIbMN+zyQKBgQDkYxl89X+Si/hn4mQy\nDkTDECuQG2O3z62bdZcxwZWJ2tutvJkjDyYzjB8MhWUd4z+XxxuDe6wv5zFEjHEC\nr1rWCmWxqQjmnp9PXJrBIsjultkzZYeeLefo7GwFRTpCOl611ALaEJAfJqqTmjdJ\nDSKpwwrDP54q0kIb5UsnDrpH6QKBgQDQLp2KblKHVCxLeMEQqyqvu//HS3B6k7F9\nPHb8XTWeDt9V9dBFA5XLI9PpwOITd1KfCND5EyI23AGYRWN9zbwLW5gSAZ2UaHmn\n2dX11w75g4bUa3/8BuaB6Y+4FvGWyfeVVMxFeiBr9R0IDEbMsOpgGwxkqBK2X5qL\nmYNVa8i7RwKBgQDcno5kk5JksimH0L4RTI9IDzrFvm+ZhFikL/eZ7PLTdEN5lRIp\nN90jNlxX8BQ5xugLah896B3xOFfza+dPPK12zhxmfm9GuDwUodQsdbm8IKQ4bf+P\n4bCA5MGEZdddWp1a8C7BD/bo4KUuaG63dqThcLPY4H+dxfZulBUA6c0w4QKBgHed\n0TdxHEpVuv3CbGw/bU98HgNM/Vvw8NKco2FtzRj8QqcJjpmY7cDC3Ug6Y6v7q6Vl\nU21J6SbMUr5DYF8wjxOXlVEDTJ+xR/WB3MZcw2XqhNYYznjpHhkXMlT8GeQiN/e9\nuYFSIr7lH8E4DJYgMQr3f692Qwo29H2xvxydycCRAoGBAMkfmcIlTp4RUQB0FkYv\ntvRhIaRlafIsHJQ0AMZhGTQ4ppc+yZc6B2V0Aj32Lmt/CZESRA/PcaiQlFFA7jLp\nNKIT+0cNGr4swNZ2bChigqoIobisNhJwoVvPaKFMM2VRHF6xXydQPeckyGLZU96d\nMfkD+CxGaGXP/900kW4d6a7o\n-----END PRIVATE KEY-----\n",
-        "client_email": "firebase-adminsdk-ad8he@iuh-da.iam.gserviceaccount.com",
-        "client_id": "113044899910773091609",
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ad8he%40iuh-da.iam.gserviceaccount.com"
-      }
-    ),
-    databaseURL: 'https://iuh-da-default-rtdb.asia-southeast1.firebasedatabase.app/'
+    credential: fbAdmin.credential.cert({
+      type: "service_account",
+      project_id: "iuh-da",
+      private_key_id: "3ddc5f4ac3b58bc4c6fe7a93feeefd49f1c80529",
+      private_key:
+        "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5uhsQYmVZVtic\n9NhBj7dWLyh34kfWb8ffACZYm52EHs3BXpiwp8zkZ9T7KOMcQ3sARXAZidgzmrJf\nCiEP194mw1EmdugB6w/Qxwn4grnEBLkC7MZcgYZe6TgK9z1Be+z7rJJWAM/AlLZW\ngxABLVGERcWcdP3RQ/vBu7a7r2y3RqSjADS4ZJeDhNUJy/jHoSoK+45TmX75Iqo6\nXt3QI5Lk9ZOlIdMoriEC8uJcGFgkbhqFG0fVh0cRRhr63m1Ncoap/pBSzyVE+XN6\n4aprrH/JvHEndWvg0ENPBLqs9EWlnm2hjHoAhKE+yS5cZvs7e+F9xWDxQRfYTfgP\n2Iq5OSSfAgMBAAECggEAKseOx1HaxV7HKzQMgeFwGdZn7GE/Kcn6kEeRDZTejdmo\njBNVeU9VVwEBok5zLYXvlYro/MDu/0fxMQn8vpD69xPDI+h8nUB/FphaGBdIYbmy\nwdU3BYTCJidzBLeZMPWyCvBfjpbGQ7YdX8T1kUfWgHCvyU97TVHq8d9igk2wbXBg\nGaMw4UuSy+hvKbL1uURDUKEWHah+cPqokW0AYwmaLr74/C/1Xos008hmIUpZNGLF\nSuz53pLj+6fcCAjktsN9SDIk8dDYEcOc7AjWUlBlFfvjuYg3JPcR3SMwcgSQXP/o\nDMaUyRIufSa2G9eG0MMQwJOZSLYimGj+ZUIbMN+zyQKBgQDkYxl89X+Si/hn4mQy\nDkTDECuQG2O3z62bdZcxwZWJ2tutvJkjDyYzjB8MhWUd4z+XxxuDe6wv5zFEjHEC\nr1rWCmWxqQjmnp9PXJrBIsjultkzZYeeLefo7GwFRTpCOl611ALaEJAfJqqTmjdJ\nDSKpwwrDP54q0kIb5UsnDrpH6QKBgQDQLp2KblKHVCxLeMEQqyqvu//HS3B6k7F9\nPHb8XTWeDt9V9dBFA5XLI9PpwOITd1KfCND5EyI23AGYRWN9zbwLW5gSAZ2UaHmn\n2dX11w75g4bUa3/8BuaB6Y+4FvGWyfeVVMxFeiBr9R0IDEbMsOpgGwxkqBK2X5qL\nmYNVa8i7RwKBgQDcno5kk5JksimH0L4RTI9IDzrFvm+ZhFikL/eZ7PLTdEN5lRIp\nN90jNlxX8BQ5xugLah896B3xOFfza+dPPK12zhxmfm9GuDwUodQsdbm8IKQ4bf+P\n4bCA5MGEZdddWp1a8C7BD/bo4KUuaG63dqThcLPY4H+dxfZulBUA6c0w4QKBgHed\n0TdxHEpVuv3CbGw/bU98HgNM/Vvw8NKco2FtzRj8QqcJjpmY7cDC3Ug6Y6v7q6Vl\nU21J6SbMUr5DYF8wjxOXlVEDTJ+xR/WB3MZcw2XqhNYYznjpHhkXMlT8GeQiN/e9\nuYFSIr7lH8E4DJYgMQr3f692Qwo29H2xvxydycCRAoGBAMkfmcIlTp4RUQB0FkYv\ntvRhIaRlafIsHJQ0AMZhGTQ4ppc+yZc6B2V0Aj32Lmt/CZESRA/PcaiQlFFA7jLp\nNKIT+0cNGr4swNZ2bChigqoIobisNhJwoVvPaKFMM2VRHF6xXydQPeckyGLZU96d\nMfkD+CxGaGXP/900kW4d6a7o\n-----END PRIVATE KEY-----\n",
+      client_email: "firebase-adminsdk-ad8he@iuh-da.iam.gserviceaccount.com",
+      client_id: "113044899910773091609",
+      auth_uri: "https://accounts.google.com/o/oauth2/auth",
+      token_uri: "https://oauth2.googleapis.com/token",
+      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+      client_x509_cert_url:
+        "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ad8he%40iuh-da.iam.gserviceaccount.com",
+    }),
+    databaseURL:
+      "https://iuh-da-default-rtdb.asia-southeast1.firebasedatabase.app/",
   });
   // Tạo một WebSocket server và liên kết nó với HTTP server
   const wss = new WebSocketServer({ server });
@@ -55,22 +56,31 @@ const socketDevice = async (server) => {
       //ws.send(`Server received message: ${message}`);
       if (message.toString() === "Connected") return;
       const dataBeat = JSON.parse(message.toString());
-      if(dataBeat?.data[1] === "BT") return;
+      if (dataBeat?.data[1] === "BT") return;
       //broadcastMessage(message);
       if (dataBeat?.data[1] >= 30) {
         //save beatAVG to database
-        const cccdPatientUsingIOT = await hearthBeatModel.findOne({
-          ip_mac: dataBeat.data[0],
-        }).populate("patient_cccd");
-        const today = new Date();
-        const beatavg = new beatAvgModel();
-        beatavg.ip_mac = dataBeat.data[0];
-        beatavg.avg = dataBeat.data[1];
-        beatavg.date_received = today;
-        beatavg.patient_cccd = cccdPatientUsingIOT.patient_cccd;
-        await beatavg.save();
+        try {
+          const cccdPatientUsingIOT = await hearthBeatModel
+            .findOne({
+              ip_mac: dataBeat.data[0],
+            })
+            .populate("patient_cccd");
+          const today = new Date();
+          const beatavg = new beatAvgModel();
+          beatavg.ip_mac = dataBeat.data[0];
+          beatavg.avg = dataBeat.data[1];
+          beatavg.date_received = today;
+          beatavg.patient_cccd = cccdPatientUsingIOT.patient_cccd.CCCD;
+          await beatavg.save();
+        } catch (error) {
+          console.log("Save beatAvg error: ", error);
+        }
 
-        const warningBeat = dataBeat.data[0] + " - " + conditionRule.conditionRule(dataBeat.data[1]);
+        const warningBeat =
+          dataBeat.data[0] +
+          " - " +
+          conditionRule.conditionRule(dataBeat.data[1]);
         const beatRealtime = dataBeat.data[0] + "," + dataBeat.data[1];
         broadcastMessage(beatRealtime);
         //const warningBeat = `HearthBeat is too low, please check your patient or device ${dataBeat.data[0]}}`;
@@ -138,7 +148,7 @@ const socketDevice = async (server) => {
       type: "warning",
       message: message,
     });
-  }
+  };
   function broadcastMessage(message) {
     clients.forEach((ws) => {
       ws.send(warningJson(message));

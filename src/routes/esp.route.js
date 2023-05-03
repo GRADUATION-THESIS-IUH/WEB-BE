@@ -31,6 +31,7 @@ router.put(
 )
 
 router.get("/get_hb",tokenMiddleware.auth, espController.getHearthBeatAll);
+router.post("/get_hb_from_ip_mac",tokenMiddleware.auth, espController.getHearthBeatFromIpMac);
 router.post("/get_hb_cbb",tokenMiddleware.auth, espController.getHearthBeatAllCBB);
 router.post("/update_hb_status",tokenMiddleware.auth, espController.updateHearthBeatStatus);
 router.post("/update_hb_patient_cccd",tokenMiddleware.auth, espController.updateHearthBeatPatientCCCD);

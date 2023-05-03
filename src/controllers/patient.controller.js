@@ -1,4 +1,5 @@
 import responseHandler from "../handlers/response.handler.js";
+import beatAvgModel from "../models/beatAvg.model.js";
 import patientModel from "../models/patient.model.js";
 const addPatient = async (req, res) => {
   try {
@@ -42,7 +43,7 @@ const getPatient = async (req, res) => {
 
 const getInactivePatient = async (req, res) => {
   try {
-    const patient = await patientModel.find({status: false});
+    const patient = await patientModel.find({ status: false });
     if (!patient) {
       responseHandler.notFound(res);
     }
@@ -74,12 +75,21 @@ const getPatientById = async (req, res) => {
 const updatePatientStatus = async (req, res) => {
   try {
     const { id, status } = req.body;
-    console.log("🚀 ~ file: patient.controller.js:77 ~ updatePatientStatus ~ status:", status)
-    console.log("🚀 ~ file: patient.controller.js:77 ~ updatePatientStatus ~ id:", id)
+    console.log(
+      "🚀 ~ file: patient.controller.js:77 ~ updatePatientStatus ~ status:",
+      status
+    );
+    console.log(
+      "🚀 ~ file: patient.controller.js:77 ~ updatePatientStatus ~ id:",
+      id
+    );
     const patientId = await patientModel.findByIdAndUpdate(id, {
       status: status,
     });
-    console.log("🚀 ~ file: patient.controller.js:82 ~ updatePatientStatus ~ patientId:", patientId)
+    console.log(
+      "🚀 ~ file: patient.controller.js:82 ~ updatePatientStatus ~ patientId:",
+      patientId
+    );
     if (!patientId) {
       responseHandler.notFound(res);
     }
@@ -89,4 +99,58 @@ const updatePatientStatus = async (req, res) => {
   }
 };
 
-export default { addPatient, getPatient, getInactivePatient, getPatientById, updatePatientStatus };
+const getPatientTopHB = async (req, res) => {
+  try {
+    const result = await beatAvgModel.aggregate([
+      {
+        $group: {
+          _id: "$patient_cccd",
+          maxAvg: { $max: "$avg" },
+        },
+      },
+      {
+        $sort: { maxAvg: -1 },
+      },
+      { $limit: 5 },
+      {
+        $group: {
+          _id: "$_id",
+          maxAvg: { $first: "$maxAvg" },
+        },
+      },
+    ]);
+
+    const filterResult = await Promise.all(
+      result.map(async (item) => {
+        const patient = await patientModel.findOne({ CCCD: item._id });
+        return {
+          key: item._id,
+          ...item,
+          name: patient ? patient.name : null,
+        };
+      })
+    );
+
+    // Nếu kết quả trả về không đủ 5 phần tử thì thêm null vào
+    while (filterResult.length < 5) {
+      filterResult.push({
+        _id: null,
+        maxAvg: null,
+        name: null,
+      });
+    }
+
+    responseHandler.ok(res, filterResult);
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
+export default {
+  addPatient,
+  getPatient,
+  getInactivePatient,
+  getPatientById,
+  updatePatientStatus,
+  getPatientTopHB,
+};

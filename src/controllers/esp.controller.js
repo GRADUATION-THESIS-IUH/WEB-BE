@@ -119,11 +119,25 @@ const updateHearthBeatPatientCCCD = async (req, res) => {
   // }
 }
 
+const getHearthBeatFromIpMac = async (req, res) => {
+  try {
+    const { ip_mac } = req.body;
+    const hearthbeat = await hearthbeatModel.findOne({ ip_mac }).select("patient_cccd").populate("patient_cccd");
+    if (!hearthbeat) {
+      responseHandler.notfound(res);
+    }
+    responseHandler.ok(res, hearthbeat);
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
 export default {
   addHearthBeat,
   updateHearthBeat,
   getHearthBeatAll,
   getHearthBeatAllCBB,
   updateHearthBeatStatus,
-  updateHearthBeatPatientCCCD
+  updateHearthBeatPatientCCCD,
+  getHearthBeatFromIpMac
 };

@@ -33,20 +33,39 @@ router.post(
     .withMessage("hospital_id is required")
     .isLength({ min: 8 })
     .withMessage("hospital_id minimum 8 chracter"),
-    body("status")
+  body("status")
     .exists()
     .withMessage("status is required")
-    .isBoolean().withMessage("status must be a boolean value"),
+    .isBoolean()
+    .withMessage("status must be a boolean value"),
   requestHandler.validate,
   patientController.addPatient
 );
 
 router.get("/get_all", tokenMiddleware.auth, patientController.getPatient);
 
-router.get("/get_inactive", tokenMiddleware.auth, patientController.getInactivePatient);
+router.get(
+  "/get_inactive",
+  tokenMiddleware.auth,
+  patientController.getInactivePatient
+);
 
-router.post("/get_patient_by_id", tokenMiddleware.auth, patientController.getPatientById);
+router.get(
+  "/get_patient_top_hb",
+  tokenMiddleware.auth,
+  patientController.getPatientTopHB
+);
 
-router.post("/update_patient_status", tokenMiddleware.auth, patientController.updatePatientStatus);
+router.post(
+  "/get_patient_by_id",
+  tokenMiddleware.auth,
+  patientController.getPatientById
+);
+
+router.post(
+  "/update_patient_status",
+  tokenMiddleware.auth,
+  patientController.updatePatientStatus
+);
 
 export default router;

@@ -17,6 +17,8 @@ router.post("/predictor",tokenMiddleware.auth, media_recordController.predictorM
 
 router.post("/end_media_record", tokenMiddleware.auth, media_recordController.endMediaRecord);
 
+router.post("/update_media_record", tokenMiddleware.auth, media_recordController.updateMediaRecord);
+
 export default router;
 
 

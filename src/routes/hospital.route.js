@@ -28,4 +28,9 @@ router.post(
 );
 
 router.get("/get_all_cbb", tokenMiddleware.auth, hospitalController.getAllHospitalCBB)
+
+router.get("/get_all", tokenMiddleware.auth, hospitalController.getAllHospital);
+
+router.get("/get_all_top_5_device", tokenMiddleware.auth, hospitalController.getAllHospitalTop5Device);
+
 export default router;
