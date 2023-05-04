@@ -19,6 +19,8 @@ router.post("/end_media_record", tokenMiddleware.auth, media_recordController.en
 
 router.post("/update_media_record", tokenMiddleware.auth, media_recordController.updateMediaRecord);
 
+router.post("/delete_media_record", tokenMiddleware.auth, media_recordController.deleteMediaRecord)
+
 export default router;
 
 

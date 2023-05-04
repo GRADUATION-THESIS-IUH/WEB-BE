@@ -144,10 +144,22 @@ const updateMediaRecord = async (req, res) => {
   }
 };
 
+const deleteMediaRecord = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const result = await mediaRecord.deleteMany({ _id: { $in: id } });
+    responseHandler.ok(res, result);
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
+
 export default {
   addMediaRecord,
   getMediaRecord,
   predictorMediaRecord,
   endMediaRecord,
   updateMediaRecord,
+  deleteMediaRecord
 };

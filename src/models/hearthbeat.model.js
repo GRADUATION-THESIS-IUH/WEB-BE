@@ -16,6 +16,7 @@ export default mongoose.model(
         hospital_id: {
             type: Schema.Types.ObjectId,
             ref: "Hospital",
+            required: true,
         },
         status: {
             type: Boolean,
@@ -24,7 +25,6 @@ export default mongoose.model(
         patient_cccd: {
             type: Schema.Types.ObjectId,
             ref: "Patient",
-            required: true,
         }
     }, modelOptions)
 )

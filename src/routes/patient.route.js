@@ -68,4 +68,8 @@ router.post(
   patientController.updatePatientStatus
 );
 
+router.put("/update_patient", tokenMiddleware.auth, patientController.updatePatient);
+
+router.post("/delete_patient", tokenMiddleware.auth, patientController.deletePatient)
+
 export default router;

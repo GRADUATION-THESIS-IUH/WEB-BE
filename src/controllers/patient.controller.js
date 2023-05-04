@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
 import responseHandler from "../handlers/response.handler.js";
 import beatAvgModel from "../models/beatAvg.model.js";
 import patientModel from "../models/patient.model.js";
+import hospitalModel from "../models/hospital.model.js";
 const addPatient = async (req, res) => {
   try {
     const { name, age, phone, gender, CCCD, hospital_id, status } = req.body;
@@ -146,6 +148,44 @@ const getPatientTopHB = async (req, res) => {
   }
 };
 
+const updatePatient = async (req, res) => {
+  try {
+    const { patientUD } = req.body;
+    if (!mongoose.isValidObjectId(patientUD.Hospital_Id)) {
+      const hospital_id_temp = await hospitalModel
+        .findOne({
+          name: patientUD.Hospital_Id,
+        })
+        .select("_id");
+      const patient = await patientModel.findById(patientUD.id);
+      patient.name = patientUD.name;
+      patient.age = patientUD.age;
+      patient.gender = patientUD.gender;
+      patient.phone = patientUD.phone;
+      patient.CCCD = patientUD.CCCD;
+      patient.hospital_id = hospital_id_temp._id;
+      await patient.save();
+      responseHandler.ok(res, patient);
+    }
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
+const deletePatient = async (req, res) => {
+  try {
+    const { id } = req.body;
+    console.log("🚀 ~ file: patient.controller.js:178 ~ deletePatient ~ id:", id)
+    const result = await patientModel.deleteMany({ _id: { $in: id } });
+    if (!result) {
+      responseHandler.notFound(res);
+    }
+    responseHandler.ok(res, result);
+  } catch (error) {
+    responseHandler.error(res);
+  }
+};
+
 export default {
   addPatient,
   getPatient,
@@ -153,4 +193,6 @@ export default {
   getPatientById,
   updatePatientStatus,
   getPatientTopHB,
+  updatePatient,
+  deletePatient
 };

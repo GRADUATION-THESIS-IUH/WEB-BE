@@ -4,7 +4,7 @@ import hearthbeatModel from "../models/hearthbeat.model";
 const addHearthBeat = async (req, res) => {
   try {
     const { name, mac, hospital, status } = req.body;
-    const checkHearthBeat = await hearthbeat.findOne({ mac });
+    const checkHearthBeat = await hearthbeatModel.findOne({ mac });
     if (checkHearthBeat)
       return responseHandler.badrequest(res, "IP Mac already IP");
 

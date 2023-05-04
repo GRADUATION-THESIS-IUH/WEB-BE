@@ -32,14 +32,28 @@ const router = express.Router({ mergeParams: true });
 // .withMessage("Hospital Name is required")
 // .isLength({ min: 8 })
 // .withMessage("Mac minimum 8 chracter"),
-router.post(
-  "/add_doctor",
-  tokenMiddleware.auth,
-  doctorController.addDoctor
-);
+router.post("/add_doctor", tokenMiddleware.auth, doctorController.addDoctor);
 
 router.get("/get_doctor", tokenMiddleware.auth, doctorController.getDoctor);
-router.get("/get_all_doctor", tokenMiddleware.auth, doctorController.getAllDoctor);
-router.get("/get_all_doctor_cbb", tokenMiddleware.auth, doctorController.getAllDoctorCBB);
+router.get(
+  "/get_all_doctor",
+  tokenMiddleware.auth,
+  doctorController.getAllDoctor
+);
+router.get(
+  "/get_all_doctor_cbb",
+  tokenMiddleware.auth,
+  doctorController.getAllDoctorCBB
+);
+router.put(
+  "/update_doctor",
+  tokenMiddleware.auth,
+  doctorController.updateDoctor
+);
+router.post(
+  "/delete_doctor",
+  tokenMiddleware.auth,
+  doctorController.deleteDoctor
+);
 
 export default router;

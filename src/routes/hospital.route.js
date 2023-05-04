@@ -12,7 +12,7 @@ router.post(
     .exists()
     .withMessage("name is required")
     .isLength({ min: 5 })
-    .withMessage("name minimum 8 chracter"),
+    .withMessage("name minimum 5 chracter"),
   body("address")
     .exists()
     .withMessage("address is required")
@@ -32,5 +32,9 @@ router.get("/get_all_cbb", tokenMiddleware.auth, hospitalController.getAllHospit
 router.get("/get_all", tokenMiddleware.auth, hospitalController.getAllHospital);
 
 router.get("/get_all_top_5_device", tokenMiddleware.auth, hospitalController.getAllHospitalTop5Device);
+
+router.post("/update_hospital", tokenMiddleware.auth, hospitalController.updateHospital);
+
+router.post("/delete_hospital", tokenMiddleware.auth, hospitalController.deleteHospital)
 
 export default router;
