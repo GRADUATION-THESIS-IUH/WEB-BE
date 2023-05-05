@@ -56,19 +56,40 @@ const conditionRule = (bmp) => {
     bmp > ruleBradycardia[0].heartRateFrom &&
     bmp < ruleBradycardia[0].heartRateTo
   ) {
-    return "Heart rate is falling, immediately check the heart rate monitor and monitor the patient's health status" + "-" + bmp;
+    return {
+      warningType: "Bradycardia",
+      message:
+        "Heart rate is falling, immediately check the heart rate monitor and monitor the patient's health status !" +
+        "- HearthBeat: " +
+        bmp,
+    };
   } else if (
     bmp >= ruleNormal[0].heartRateFrom &&
     bmp <= ruleNormal[0].heartRateTo
   ) {
-    return "This patient's heart rate is normal, please continue to monitor the patient's health" + "-" + bmp;
+    return {
+      warningType: "Normal",
+      message:
+        "This patient's heart rate is normal, please continue to monitor the patient's health" +
+        "- HearthBeat: " +
+        bmp,
+    };
   } else if (
     bmp >= ruleTachycardia[0].heartRateFrom &&
     bmp < ruleTachycardia[0].heartRateTo
   ) {
-    return "The heart rate is increasing suddenly, now check the heart rate monitor again and monitor the patient's health status" + "-" + bmp;
+    return {
+      warningType: "Tachycardia",
+      message:
+        "The heart rate is increasing suddenly, now check the heart rate monitor again and monitor the patient's health status" +
+        "- HearthBeat: " +
+        bmp,
+    };
   } else {
-    return "This patient's heart rate is too high, intervene immediately" + "-" + bmp;
+    return {
+      warningType: "TooHight",
+      message: "This patient's heart rate is too high, intervene immediately" + "- HearthBeat: " + bmp,
+    };
   }
 };
 
