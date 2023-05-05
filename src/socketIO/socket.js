@@ -39,7 +39,7 @@ const socketDevice = async (server) => {
       body: "Body of Your Notification in Data",
     },
     token:
-      "fTy72ynPTVKutu_nYF8UUQ:APA91bGS8KYISU8Dh6gloQqfmMlLXeFuv1ww-e8gm3wruDWM-HKL8EM_suQUFQxNVqshzino8I5bZQ1tYv1MLsQdKtUEIBCjux38VjnQ9eOyqNfSwAhbxgtzMjKDpRULI6Byxee46laG",
+      "fQGm4-y0SxiGUscG7THZ9t:APA91bE6BdwWERX2X6hU0N4RVndI5a52dmCVhvt0DrL9h8qlAyMatFDtFvPaDTdF3VElXGscr9J9WNiMHlGrTa82mkNigaaMKRvSbGvo-NfZum8uq-BU7EQI2uWF6w8t0d7hKZBHx_xw",
   };
 
   const token = "6298542409:AAGLk0uCMAJ6LFG3C5YN7EOh7bzHizY_tIU";
